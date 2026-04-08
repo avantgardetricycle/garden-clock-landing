@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About — Buoy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --buoy:       #D95E2A;
+    --buoy-light: #E8845A;
+    --water:      #3D6B72;
+    --water-deep: #1E3E45;
+    --water-pale: #A8C5CA;
+    --stone:      #F0EBE3;
+    --stone-warm: #E8DDD0;
+    --cave:       #C4B49A;
+    --cave-dark:  #7A6850;
+    --text-dark:  #1A1410;
+    --text-mid:   #4A3F35;
+    --text-light: #8A7B6E;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--stone);
+    color: var(--text-dark);
+    overflow-x: hidden;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.1rem 3rem;
+    background: rgba(240,235,227,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(196,180,154,0.3);
+  }
+  .nav-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.4rem; font-weight: 400;
+    color: var(--buoy); text-decoration: none; letter-spacing: 0.05em;
+  }
+  .nav-links { display: flex; gap: 2rem; list-style: none; align-items: center; }
+  .nav-links a {
+    font-size: 0.85rem; color: var(--text-mid);
+    text-decoration: none; transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--buoy); }
+  .nav-cta {
+    background: var(--buoy) !important; color: white !important;
+    padding: 0.45rem 1.2rem; border-radius: 2rem; font-weight: 500 !important;
+  }
+
+  /* ── HERO ── */
+  /* Two-column: text left, image right — full viewport height */
+  .hero {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: calc(100vh - 52px);
+  }
+
+  .hero-text {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 5rem 4rem 5rem 5rem;
+    animation: fadeUp 0.8s ease both;
+  }
+
+  .hero-kicker {
+    font-size: 0.7rem; font-weight: 500;
+    letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--buoy); margin-bottom: 1.5rem; display: block;
+  }
+
+  .hero-headline {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.5rem, 4.5vw, 3.75rem);
+    font-weight: 300; line-height: 1.1;
+    color: var(--text-dark); margin-bottom: 1.75rem;
+  }
+  .hero-headline em { font-style: italic; color: var(--buoy); }
+
+  .hero-intro {
+    font-size: 1rem; font-weight: 300;
+    line-height: 1.85; color: var(--text-mid);
+    max-width: 46ch;
+  }
+
+  /* Hero image — full bleed right column */
+  .hero-image {
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-image img {
+    width: 100%; height: 100%;
+    object-fit: cover; object-position: center;
+    display: block;
+  }
+  /* Gradient fade on left edge so text bleeds in */
+  .hero-image::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(to right, var(--stone) 0%, transparent 20%);
+    z-index: 1;
+  }
+
+  /* ── PULL QUOTE BAND ── */
+  .quote-band {
+    background: var(--water-deep);
+    padding: 4.5rem 5rem;
+    display: grid;
+    grid-template-columns: 3fr 2fr;
+    gap: 5rem;
+    align-items: center;
+  }
+
+  .band-quote {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.6rem, 2.8vw, 2.25rem);
+    font-weight: 300; font-style: italic;
+    line-height: 1.4; color: white;
+  }
+
+  .band-quote cite {
+    display: block;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.75rem; font-style: normal;
+    font-weight: 400; letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--water-pale);
+    margin-top: 1.25rem;
+  }
+
+  .band-text {
+    font-size: 0.92rem; font-weight: 300;
+    line-height: 1.85; color: var(--water-pale);
+  }
+  .band-text strong { color: white; font-weight: 500; }
+
+  /* ── ESSAY — single column, generous margins, wide ── */
+  .essay {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 6rem 3rem;
+    animation: fadeUp 0.8s 0.15s ease both;
+  }
+
+  .essay-section {
+    margin-bottom: 4.5rem;
+  }
+
+  .section-kicker {
+    font-size: 0.68rem; font-weight: 500;
+    letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--buoy); margin-bottom: 1rem; display: block;
+  }
+
+  .essay-section h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.6rem, 2.5vw, 2.1rem);
+    font-weight: 300; line-height: 1.2;
+    color: var(--text-dark); margin-bottom: 1.25rem;
+  }
+
+  .essay-section p {
+    font-size: 1rem; font-weight: 300;
+    line-height: 1.9; color: var(--text-mid);
+    margin-bottom: 1.25em;
+  }
+  .essay-section p:last-child { margin-bottom: 0; }
+  .essay-section p strong { color: var(--text-dark); font-weight: 500; }
+
+  /* Inline pull quote */
+  .pull-quote {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.3rem, 2.2vw, 1.65rem);
+    font-weight: 400; font-style: italic;
+    line-height: 1.45; color: var(--text-dark);
+    border-left: 3px solid var(--buoy);
+    padding: 0.75rem 0 0.75rem 1.5rem;
+    margin: 2.25rem 0;
+  }
+
+  /* ── IMAGE BREAK ── */
+  /* Full-width image with optional caption — used between essay sections */
+  .image-break {
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+    background: var(--stone-warm);
+  }
+
+  .image-break img {
+    width: 100%; display: block;
+    object-fit: cover;
+  }
+
+  .image-break.portrait {
+    max-height: 70vh;
+  }
+  .image-break.portrait img { max-height: 70vh; object-position: center top; }
+
+  .image-break.landscape {
+    max-height: 55vh;
+  }
+  .image-break.landscape img { max-height: 55vh; }
+
+  /* Two-column image pair */
+  .image-pair {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+  }
+  .image-pair .image-break { max-height: 60vh; }
+  .image-pair .image-break img { max-height: 60vh; }
+
+  .image-caption {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    padding: 1rem 1.5rem;
+    background: linear-gradient(to top, rgba(26,20,16,0.65) 0%, transparent 100%);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.85rem; font-style: italic;
+    color: rgba(255,255,255,0.8);
+  }
+
+  /* Placeholder styling for images not yet provided */
+  .img-placeholder {
+    width: 100%; height: 100%;
+    min-height: 400px;
+    background: linear-gradient(135deg, var(--cave) 0%, var(--cave-dark) 100%);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 0.75rem;
+  }
+  .img-placeholder-label {
+    font-size: 0.75rem; font-weight: 500;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: rgba(255,255,255,0.5);
+  }
+  .img-placeholder-note {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1rem; font-style: italic;
+    color: rgba(255,255,255,0.35);
+    max-width: 28ch; text-align: center;
+  }
+
+  /* ── TOOL LIST ── */
+  .tool-list {
+    border-top: 1px solid rgba(196,180,154,0.45);
+    margin-top: 1.75rem;
+  }
+
+  .tool-item {
+    display: grid;
+    grid-template-columns: 170px 1fr;
+    gap: 2rem;
+    padding: 1.1rem 0;
+    border-bottom: 1px solid rgba(196,180,154,0.3);
+    align-items: baseline;
+  }
+
+  .tool-name {
+    font-size: 0.85rem; font-weight: 500;
+    color: var(--text-dark); letter-spacing: 0.01em;
+  }
+
+  .tool-note {
+    font-size: 0.875rem; font-weight: 300;
+    line-height: 1.65; color: var(--text-mid);
+  }
+
+  /* ── PRINCIPLES BAND ── */
+  .principles {
+    background: var(--water-deep);
+    padding: 6rem 5rem;
+  }
+
+  .principles-label {
+    font-size: 0.7rem; font-weight: 500;
+    letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--water-pale); margin-bottom: 1rem; display: block;
+  }
+
+  .principles-headline {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.8rem, 3vw, 2.5rem);
+    font-weight: 300; color: white;
+    line-height: 1.2; margin-bottom: 3.5rem;
+    max-width: 36ch;
+  }
+
+  .principles-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 2px;
+  }
+
+  .principle-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.07);
+    padding: 1.75rem 1.5rem;
+    transition: background 0.2s;
+  }
+  .principle-card:hover { background: rgba(255,255,255,0.09); }
+
+  .principle-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.75rem; font-weight: 300;
+    color: rgba(255,255,255,0.15);
+    line-height: 1; margin-bottom: 0.85rem;
+  }
+
+  .principle-title {
+    font-size: 0.88rem; font-weight: 500;
+    color: white; margin-bottom: 0.5rem;
+  }
+
+  .principle-body {
+    font-size: 0.8rem; font-weight: 300;
+    line-height: 1.7; color: var(--water-pale);
+  }
+
+  /* ── CLOSING ── */
+  .closing {
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 7rem 3rem;
+    text-align: center;
+  }
+
+  .closing-headline {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+    font-weight: 300; font-style: italic;
+    color: var(--text-dark); line-height: 1.25;
+    margin-bottom: 1.25rem;
+  }
+
+  .closing-body {
+    font-size: 0.95rem; font-weight: 300;
+    line-height: 1.85; color: var(--text-mid);
+    margin-bottom: 2.25rem;
+  }
+
+  .btn-primary {
+    background: var(--buoy); color: white;
+    padding: 0.85rem 2.25rem; border-radius: 3rem;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem; font-weight: 500;
+    text-decoration: none; display: inline-block;
+    transition: background 0.2s, transform 0.2s;
+  }
+  .btn-primary:hover { background: var(--buoy-light); transform: translateY(-1px); }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--text-dark); color: var(--cave);
+    padding: 2.5rem 3rem;
+    display: flex; align-items: center;
+    justify-content: space-between; flex-wrap: wrap; gap: 1.5rem;
+  }
+  .footer-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.2rem; color: white;
+  }
+  .footer-links { display: flex; gap: 1.75rem; list-style: none; flex-wrap: wrap; }
+  .footer-links a { font-size: 0.8rem; color: var(--cave); text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: white; }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 860px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { display: none; }
+    .hero { grid-template-columns: 1fr; min-height: auto; }
+    .hero-text { padding: 5rem 1.5rem 3rem; }
+    .hero-image { height: 55vw; }
+    .hero-image::before { background: linear-gradient(to bottom, var(--stone) 0%, transparent 30%); }
+    .quote-band { grid-template-columns: 1fr; padding: 3.5rem 1.5rem; gap: 2rem; }
+    .essay { padding: 4rem 1.5rem; }
+    .tool-item { grid-template-columns: 1fr; gap: 0.3rem; }
+    .image-pair { grid-template-columns: 1fr; }
+    .principles { padding: 4rem 1.5rem; }
+    .closing { padding: 5rem 1.5rem; }
+    footer { padding: 2rem 1.5rem; flex-direction: column; align-items: flex-start; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="/" class="nav-logo">Buoy</a>
+  <ul class="nav-links">
+    <li><a href="/#how-it-works">How it works</a></li>
+    <li><a href="/#your-path">Your path</a></li>
+    <li><a href="/crisis-resources">Crisis resources</a></li>
+    <li><a href="/#download" class="nav-cta">Get the app</a></li>
+  </ul>
+</nav>
+
+<!-- ══ HERO ══ -->
+<section class="hero">
+  <div class="hero-text">
+    <span class="hero-kicker">About Buoy</span>
+    <h1 class="hero-headline">
+      Built by someone<br>
+      who is still<br>
+      <em>figuring it out.</em>
+    </h1>
+    <p class="hero-intro">
+      My name is [Name]. I'm a mathematician, a technologist, a choreographer, and a person in recovery. I built Buoy because I couldn't find a tool that worked the way my recovery actually works — non-linear, messy, and deeply mine.
+    </p>
+  </div>
+  <div class="hero-image">
+    <!--
+      PHOTO NOTE: A candid portrait — dance studio, desk, or outdoors.
+      Something that shows you as a full person, not a founder headshot.
+      Warm light preferred. Aspect ratio: roughly 1:1.5.
+    -->
+    <img src="buoy_branding_2.png" alt="[Your name] — founder of Buoy">
+  </div>
+</section>
+
+<!-- ══ PULL QUOTE BAND ══ -->
+<div class="quote-band">
+  <blockquote class="band-quote">
+    "Recovery is not one thing. It's a story that changes shape over time — and I couldn't find a tool that understood that."
+    <cite>— [Name], founder</cite>
+  </blockquote>
+  <p class="band-text">
+    I've been in recovery for over a decade. I've tried <strong>AA, therapy, moderation management, Naltrexone, peer support, and AI chat</strong>. Different things have worked at different stages. Building Buoy was my way of making sense of all of it.
+  </p>
+</div>
+
+<!-- ══ ESSAY ══ -->
+<div class="essay">
+
+  <!-- SECTION 1: How it started -->
+  <section class="essay-section">
+    <span class="section-kicker">How it started</span>
+    <h2>It didn't start the way people imagine.</h2>
+    <p>
+      My addiction didn't begin with a bad decision. It began with surgery — several of them, consecutive, during my gender transition in my late twenties. Each one left me in real pain. Each one came with a prescription. Somewhere in that year and a half, the pain stopped being the reason I was taking it.
+    </p>
+    <p>
+      I quit oxycontin cold turkey after recognizing, in one clear moment, how much I'd quietly given away — energy, presence, the texture of my own days. Access helped: you can't refill a prescription at 11pm. What worked for opioids didn't work for alcohol. That lesson took longer to learn.
+    </p>
+  </section>
+
+</div>
+
+<!-- IMAGE BREAK 1: between Oxy and alcohol sections -->
+<div class="image-break landscape">
+  <!--
+    PHOTO NOTE: Something evocative of transition or threshold — not literal.
+    Could be the buoy branding image 1, or a personal photo that feels
+    like a turning point. Landscape orientation. Not a portrait.
+  -->
+  <img src="buoy_branding_1.png" alt="A buoy floating in still water inside a cave, open horizon ahead">
+  <div class="image-caption">The moment of clarity doesn't always look dramatic from the outside.</div>
+</div>
+
+<div class="essay">
+
+  <!-- SECTION 2: Alcohol -->
+  <section class="essay-section">
+    <span class="section-kicker">The harder one</span>
+    <h2>Alcohol has been a different story entirely.</h2>
+
+    <blockquote class="pull-quote">
+      "Alcohol is hard because it's everywhere. Because a glass of wine is what reasonable adults do at dinner. Because the world is not organized around your sobriety."
+    </blockquote>
+
+    <p>
+      If opioids were a sudden flood, alcohol was a slow tide through my thirties. By the time I understood how much of my life was organized around it, the tide was already high. The tools that helped with Oxy didn't help here. What I needed was ongoing management, not a single moment of clarity.
+    </p>
+    <p>
+      Here is what has been in my toolkit, honestly and without hierarchy:
+    </p>
+
+    <div class="tool-list">
+      <div class="tool-item">
+        <div class="tool-name">Therapy</div>
+        <div class="tool-note">The most foundational. Not just about the addiction — about what it was doing for me.</div>
+      </div>
+      <div class="tool-item">
+        <div class="tool-name">AA</div>
+        <div class="tool-note">I have complicated feelings about some of the theology. The community is real. I still go.</div>
+      </div>
+      <div class="tool-item">
+        <div class="tool-name">Moderation management</div>
+        <div class="tool-note">Was exactly right for a period. Stopped being enough. Knowing that has been useful in its own way.</div>
+      </div>
+      <div class="tool-item">
+        <div class="tool-name">Naltrexone</div>
+        <div class="tool-note">Underused and underknown. The Sinclair Method genuinely changed my relationship to craving.</div>
+      </div>
+      <div class="tool-item">
+        <div class="tool-name">Non-alcoholic alternatives</div>
+        <div class="tool-note">More practical than it sounds. The ritual of a drink matters. Having something that fills that shape does too.</div>
+      </div>
+      <div class="tool-item">
+        <div class="tool-name">Peer support</div>
+        <div class="tool-note">Specific people who know my story. Not a program — just people. Irreplaceable.</div>
+      </div>
+      <div class="tool-item">
+        <div class="tool-name">AI conversations</div>
+        <div class="tool-note">Available at 3am without asking anything of me first. It does something nothing else does — more on this below.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 3: Why AI -->
+  <section class="essay-section">
+    <span class="section-kicker">Why AI</span>
+    <h2>What AI does that nothing else does.</h2>
+    <p>
+      I want to be clear about what AI is and isn't. It's not therapy. There's no real relationship. In an acute crisis, you need a human being.
+    </p>
+    <p>
+      But addiction isn't only made of acute crises. A lot of it is the low-grade hum of an urge on a Tuesday night — the moment you're driving home and can already see the liquor store. In those moments, what you sometimes need is just a place to say the thing out loud and have something reflect it back, <strong>without the weight of another person's worry.</strong>
+    </p>
+    <p>
+      Shame is one of the engines of addiction, and it also makes asking for help hard. Calling someone I love when I'm struggling requires trust, and trust is difficult when I'm ashamed. An AI doesn't require that trust first. That lower barrier means I reach for help sooner — and sooner is what matters.
+    </p>
+    <p>
+      I started using AI chat in my recovery before I thought about building one. I noticed it was helping. I also noticed it wasn't quite right — not built for this, not aware of my patterns or history. I started thinking about what it would look like if it were.
+    </p>
+  </section>
+
+</div>
+
+<!-- IMAGE BREAK 2: two-column pair before the "why Buoy" section -->
+<div class="image-pair">
+  <div class="image-break">
+    <!--
+      PHOTO NOTE (left): Something personal — your hands, a notebook,
+      a dance rehearsal, or a quiet moment. Warm tones.
+    -->
+    <div class="img-placeholder">
+      <span class="img-placeholder-label">Photo</span>
+      <span class="img-placeholder-note">A personal moment — dance, work, or a quiet corner</span>
+    </div>
+  </div>
+  <div class="image-break">
+    <img src="buoy_branding_3.png" alt="A buoy floating in still water, framed by cave walls, open to the horizon">
+  </div>
+</div>
+
+<div class="essay">
+
+  <!-- SECTION 4: Why Buoy -->
+  <section class="essay-section">
+    <span class="section-kicker">Why Buoy</span>
+    <h2>I didn't build this because my life fell apart.</h2>
+    <p>
+      I have a PhD in mathematics, a career in tech, a parallel life as a professional choreographer and dancer, and a community of people I love. By most measures, I was high-functioning. Which meant I also had particular blindspots — it's easy to tell yourself you're fine when you're still performing fine.
+    </p>
+    <p>
+      I quit because I kept getting glimpses of what my life felt like when I was fully inside it. Not fighting for energy, not negotiating with my own brain, not spending a portion of every day somewhere else. I wanted to live in those glimpses.
+    </p>
+
+    <blockquote class="pull-quote">
+      "The most useful thing a person who built a recovery app can say is not 'I figured it out' — it's 'I'm still figuring it out, and here's what I've learned so far.'"
+    </blockquote>
+
+    <p>
+      I'm still in it. Alcohol is still harder than opioids were. I still have weeks that are easier than others. Buoy is built on the belief that this is not a failure — it's just what recovery looks like for a lot of people. Not a solution. A companion for the figuring.
+    </p>
+  </section>
+
+</div>
+
+<!-- ══ PRINCIPLES ══ -->
+<section class="principles">
+  <span class="principles-label">What Buoy stands for</span>
+  <h2 class="principles-headline">The things I couldn't compromise on.</h2>
+  <div class="principles-grid">
+    <div class="principle-card">
+      <div class="principle-num">01</div>
+      <div class="principle-title">No single right path</div>
+      <p class="principle-body">Abstinence, moderation, harm reduction, MAT — Buoy supports them all without a preferred outcome.</p>
+    </div>
+    <div class="principle-card">
+      <div class="principle-num">02</div>
+      <div class="principle-title">Judgment is the enemy</div>
+      <p class="principle-body">The app will never shame you for a relapse, a slip, or a choice it doesn't fully understand.</p>
+    </div>
+    <div class="principle-card">
+      <div class="principle-num">03</div>
+      <div class="principle-title">Always available</div>
+      <p class="principle-body">The hardest moments don't wait for business hours. Neither does Buoy.</p>
+    </div>
+    <div class="principle-card">
+      <div class="principle-num">04</div>
+      <div class="principle-title">Your data, your story</div>
+      <p class="principle-body">What you share in Buoy belongs to you. It's not sold, mined for ads, or used to train AI.</p>
+    </div>
+    <div class="principle-card">
+      <div class="principle-num">05</div>
+      <div class="principle-title">AI as a tool, not a replacement</div>
+      <p class="principle-body">Buoy is not a therapist or a sponsor. We say this clearly because we mean it.</p>
+    </div>
+    <div class="principle-card">
+      <div class="principle-num">06</div>
+      <div class="principle-title">Recovery is a story</div>
+      <p class="principle-body">Your approach will change. Buoy is built to hold that history — not flatten it into a single label.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══ CLOSING ══ -->
+<div class="closing">
+  <h2 class="closing-headline">If any of this sounds familiar, Buoy is for you.</h2>
+  <p class="closing-body">
+    You don't have to be at rock bottom. You don't have to know what kind of recovery you're doing. You just have to want a little more support than you currently have — on your terms, at your pace.
+  </p>
+  <a href="/#download" class="btn-primary">Download Buoy</a>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">Buoy</div>
+  <ul class="footer-links">
+    <li><a href="/about">About</a></li>
+    <li><a href="/crisis-resources">Crisis resources</a></li>
+    <li><a href="/privacy">Privacy policy</a></li>
+    <li><a href="/terms">Terms of service</a></li>
+    <li><a href="mailto:hello@buoy.app">Contact</a></li>
+  </ul>
+</footer>
+
+</body>
+</html>
