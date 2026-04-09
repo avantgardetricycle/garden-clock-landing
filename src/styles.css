@@ -394,19 +394,16 @@ nav {
   box-shadow: 0 0 0 1px rgba(184, 149, 90, 0.2), 0 40px 100px rgba(28, 26, 22, 0.2);
 }
 
-.screenshot-placeholder {
+.scene-image-wrap .scene-gallery-img {
   width: 100%;
   height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: "Cormorant Garamond", serif;
-  font-style: italic;
-  font-size: 1.3rem;
-  color: rgba(255, 255, 255, 0.66);
-  letter-spacing: 0.08em;
-  text-align: center;
-  padding: 1rem;
+  object-fit: cover;
+  display: block;
+  transition: opacity 0.4s ease;
+}
+
+.scene-image-wrap .scene-gallery-img.fading {
+  opacity: 0;
 }
 
 .scene-meta {
@@ -662,58 +659,6 @@ footer {
 .footer-copy {
   font-size: 0.72rem;
   letter-spacing: 0.05em;
-}
-
-.ph-3am {
-  background: linear-gradient(135deg, #0d1117 0%, #1a2332 100%);
-}
-.ph-5am {
-  background: linear-gradient(135deg, #171625 0%, #3d3754 100%);
-}
-.ph-6am {
-  background: linear-gradient(135deg, #443756 0%, #9b7d9a 100%);
-}
-.ph-7am {
-  background: linear-gradient(135deg, #7d7ca3 0%, #d1b89d 100%);
-}
-.ph-8am {
-  background: linear-gradient(135deg, #9dc0cf 0%, #d9d8ae 100%);
-}
-.ph-9am {
-  background: linear-gradient(135deg, #97c5b4 0%, #d8d2ab 100%);
-}
-.ph-11am {
-  background: linear-gradient(135deg, #8ec098 0%, #d6dcbe 100%);
-}
-.ph-12pm {
-  background: linear-gradient(135deg, #7fbe81 0%, #d6e0b8 100%);
-}
-.ph-2pm {
-  background: linear-gradient(135deg, #7ba873 0%, #c8d093 100%);
-}
-.ph-4pm {
-  background: linear-gradient(135deg, #8c9a5d 0%, #d8ba74 100%);
-}
-.ph-5pm {
-  background: linear-gradient(135deg, #94844d 0%, #cc9f67 100%);
-}
-.ph-6pm {
-  background: linear-gradient(135deg, #9b6b48 0%, #b68163 100%);
-}
-.ph-7pm {
-  background: linear-gradient(135deg, #6f4a3f 0%, #a56a5b 100%);
-}
-.ph-8pm-night {
-  background: linear-gradient(135deg, #46374c 0%, #5f4e73 100%);
-}
-.ph-9pm-night {
-  background: linear-gradient(135deg, #2f2b49 0%, #3d4d72 100%);
-}
-.ph-10pm {
-  background: linear-gradient(135deg, #191f39 0%, #25344f 100%);
-}
-.ph-11pm-night {
-  background: linear-gradient(135deg, #101424 0%, #1a2132 100%);
 }
 
 @media (max-width: 768px) {

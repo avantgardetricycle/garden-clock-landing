@@ -4,25 +4,71 @@ const POLAR_LINK = "https://buy.polar.sh/YOUR_POLAR_LINK";
 const LOGO_SRC = "/logo.png";
 const FEATURE_VIDEO_SRC = "/garden_clock_feature_video.mp4";
 
-const sceneTimes = [
-  { hour: "3am", label: "3am - Deep night", bgClass: "ph-3am" },
-  { hour: "5am", label: "5am - Pre-dawn", bgClass: "ph-5am" },
-  { hour: "6am", label: "6am - First light", bgClass: "ph-6am" },
-  { hour: "7am", label: "7am - Morning", bgClass: "ph-7am" },
-  { hour: "8am", label: "8am - Morning light", bgClass: "ph-8am" },
-  { hour: "9am", label: "9am - Mid-morning", bgClass: "ph-9am" },
-  { hour: "11am", label: "11am - Late morning", bgClass: "ph-11am" },
-  { hour: "12pm", label: "12pm - Full bloom", bgClass: "ph-12pm" },
-  { hour: "2pm", label: "2pm - Afternoon", bgClass: "ph-2pm" },
-  { hour: "4pm", label: "4pm - Golden light", bgClass: "ph-4pm" },
-  { hour: "5pm", label: "5pm - Late afternoon", bgClass: "ph-5pm" },
-  { hour: "6pm", label: "6pm - Golden hour", bgClass: "ph-6pm" },
-  { hour: "7pm", label: "7pm - Sunset", bgClass: "ph-7pm" },
-  { hour: "8pm", label: "8pm - Dusk", bgClass: "ph-8pm-night" },
-  { hour: "9pm", label: "9pm - Twilight", bgClass: "ph-9pm-night" },
-  { hour: "10pm", label: "10pm - Night", bgClass: "ph-10pm" },
-  { hour: "11pm", label: "11pm - Deep night", bgClass: "ph-11pm-night" },
+const sceneDefs = [
+  ["12am", "12am · Midnight"],
+  ["1am", "1am · Late night"],
+  ["2am", "2am · Quiet hours"],
+  ["3am", "3am · Deep night"],
+  ["4am", "4am · Before dawn"],
+  ["5am", "5am · Pre-dawn"],
+  ["6am", "6am · First light"],
+  ["7am", "7am · Morning"],
+  ["8am", "8am · Morning light"],
+  ["9am", "9am · Mid-morning"],
+  ["10am", "10am · Late morning"],
+  ["11am", "11am · Before noon"],
+  ["12pm", "12pm · Full bloom"],
+  ["1pm", "1pm · Early afternoon"],
+  ["2pm", "2pm · Afternoon"],
+  ["3pm", "3pm · Mid-afternoon"],
+  ["4pm", "4pm · Golden light"],
+  ["5pm", "5pm · Late afternoon"],
+  ["6pm", "6pm · Golden hour"],
+  ["7pm", "7pm · Sunset"],
+  ["8pm", "8pm · Dusk"],
+  ["9pm", "9pm · Twilight"],
+  ["10pm", "10pm · Night"],
+  ["11pm", "11pm · Deep night"],
 ];
+
+const sceneTimes = sceneDefs.map(([hour, label]) => ({
+  hour,
+  label,
+  imageSrc: `/${hour}.png`,
+}));
+
+/** Scene index 1–24 for labels: 2am = 1 … 1am = 24 (screensaver hour order). */
+const SCENE_COUNT_ORDER = [
+  "2am",
+  "3am",
+  "4am",
+  "5am",
+  "6am",
+  "7am",
+  "8am",
+  "9am",
+  "10am",
+  "11am",
+  "12pm",
+  "1pm",
+  "2pm",
+  "3pm",
+  "4pm",
+  "5pm",
+  "6pm",
+  "7pm",
+  "8pm",
+  "9pm",
+  "10pm",
+  "11pm",
+  "12am",
+  "1am",
+];
+
+function sceneNumberForHour(hour) {
+  const i = SCENE_COUNT_ORDER.indexOf(hour);
+  return i >= 0 ? i + 1 : 1;
+}
 
 const features = [
   {
@@ -60,6 +106,7 @@ const features = [
 export default function LandingPage() {
   const initialScene = sceneTimes.find((scene) => scene.hour === "7pm");
   const [activeHour, setActiveHour] = useState(initialScene?.hour ?? sceneTimes[0].hour);
+  const [sceneFading, setSceneFading] = useState(false);
   const [videoMuted, setVideoMuted] = useState(false);
   const featureVideoRef = useRef(null);
 
@@ -81,6 +128,15 @@ export default function LandingPage() {
     () => sceneTimes.find((scene) => scene.hour === activeHour) ?? sceneTimes[0],
     [activeHour]
   );
+
+  function selectSceneHour(hour) {
+    if (hour === activeHour) return;
+    setSceneFading(true);
+    window.setTimeout(() => {
+      setActiveHour(hour);
+      setSceneFading(false);
+    }, 400);
+  }
 
   return (
     <>
@@ -196,7 +252,7 @@ export default function LandingPage() {
               <button
                 type="button"
                 className={`time-btn${activeHour === scene.hour ? " active" : ""}`}
-                onClick={() => setActiveHour(scene.hour)}
+                onClick={() => selectSceneHour(scene.hour)}
               >
                 {scene.hour}
               </button>
@@ -207,13 +263,19 @@ export default function LandingPage() {
 
         <div className="scene-display">
           <div className="scene-image-wrap">
-            <div className={`screenshot-placeholder ${activeScene.bgClass}`} role="img" aria-label={activeScene.label}>
-              {activeScene.label}
-            </div>
+            <img
+              className={`scene-gallery-img${sceneFading ? " fading" : ""}`}
+              src={activeScene.imageSrc}
+              alt={`Garden Clock at ${activeScene.hour}`}
+              loading="lazy"
+              decoding="async"
+              width={1920}
+              height={1080}
+            />
           </div>
           <div className="scene-meta">
             <span className="scene-label-text">{activeScene.label}</span>
-            <span className="scene-of">of 24 scenes</span>
+            <span className="scene-of">{sceneNumberForHour(activeScene.hour)} of 24 scenes</span>
           </div>
         </div>
       </section>
