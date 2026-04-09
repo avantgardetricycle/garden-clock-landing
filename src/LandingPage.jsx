@@ -526,7 +526,7 @@ export default function LandingPage() {
             <a href="https://x.com/garden_clock">X / Twitter</a>
           </li>
           <li>
-            <a href="mailto:hello@gardenclock.xyz">Contact</a>
+            <a href="mailto:scott@underdogsoftware.xyz">Contact</a>
           </li>
           <li>
             <a href="/privacy">Privacy</a>
