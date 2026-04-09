@@ -1,6 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 
-const POLAR_LINK = "https://buy.polar.sh/YOUR_POLAR_LINK";
 const LOGO_SRC = "/logo.png";
 const FEATURE_VIDEO_SRC = "/garden_clock_feature_video.mp4";
 
@@ -155,10 +154,13 @@ export default function LandingPage() {
           <li>
             <a href="#specs">Details</a>
           </li>
-          <li>
-            <a href={POLAR_LINK} className="nav-buy">
+          <li className="nav-buy-item">
+            <button type="button" disabled className="nav-buy">
               Buy - $19
-            </a>
+            </button>
+            <p className="buy-coming-soon buy-coming-soon--nav">
+              <em>Coming soon!</em>
+            </p>
           </li>
         </ul>
       </nav>
@@ -182,11 +184,16 @@ export default function LandingPage() {
             A living garden that changes with every hour of the day. From moonlit midnight to golden dusk -
             always in motion, always in time.
           </p>
-          <div className="hero-actions">
-            <a href={POLAR_LINK} className="btn-primary">
-              Buy for macOS
-            </a>
-            <span className="btn-price">$19 - one-time purchase</span>
+          <div className="hero-buy-block">
+            <div className="hero-actions">
+              <button type="button" disabled className="btn-primary">
+                Buy for macOS
+              </button>
+              <span className="btn-price">$19 - one-time purchase</span>
+            </div>
+            <p className="buy-coming-soon">
+              <em>Coming soon!</em>
+            </p>
           </div>
         </div>
 
@@ -383,10 +390,13 @@ export default function LandingPage() {
           something <em>alive</em>
         </h2>
         <p className="cta-sub">One-time purchase. Free updates. Instant download.</p>
-        <div>
-          <a href={POLAR_LINK} className="btn-primary cta-btn">
+        <div className="cta-buy-block">
+          <button type="button" disabled className="btn-primary cta-btn">
             Buy Garden Clock - $19
-          </a>
+          </button>
+          <p className="buy-coming-soon">
+            <em>Coming soon!</em>
+          </p>
         </div>
         <div className="cta-details">
           <span className="cta-detail">

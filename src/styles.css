@@ -100,6 +100,12 @@ nav {
   color: var(--ink);
 }
 
+.nav-buy-item {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
 .nav-buy {
   font-size: 0.78rem;
   font-weight: 500;
@@ -111,8 +117,38 @@ nav {
   border-radius: 2px;
 }
 
-.nav-buy:hover {
+button.nav-buy {
+  font-family: inherit;
+  border: none;
+  cursor: pointer;
+}
+
+button.nav-buy:disabled {
+  opacity: 0.72;
+  cursor: not-allowed;
+}
+
+.nav-buy:not(:disabled):hover {
   background: var(--gold) !important;
+}
+
+.buy-coming-soon {
+  margin: 0.75rem 0 0;
+  font-size: 0.82rem;
+  color: var(--ink-muted);
+  text-align: center;
+}
+
+.buy-coming-soon em {
+  font-style: italic;
+}
+
+.buy-coming-soon--nav {
+  margin-top: 0.35rem;
+  margin-bottom: 0;
+  font-size: 0.65rem;
+  text-align: right;
+  line-height: 1.2;
 }
 
 .hero {
@@ -166,6 +202,12 @@ nav {
   line-height: 1.5;
 }
 
+.hero-buy-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .hero-actions {
   display: flex;
   align-items: center;
@@ -188,7 +230,18 @@ nav {
   transition: background 0.25s, transform 0.2s;
 }
 
-.btn-primary:hover {
+button.btn-primary {
+  font-family: inherit;
+  border: none;
+  cursor: pointer;
+}
+
+button.btn-primary:disabled {
+  opacity: 0.72;
+  cursor: not-allowed;
+}
+
+.btn-primary:not(:disabled):hover {
   background: var(--gold);
   transform: translateY(-1px);
 }
@@ -585,6 +638,12 @@ nav {
   color: var(--ink-muted);
   margin-bottom: 3rem;
   letter-spacing: 0.05em;
+}
+
+.cta-buy-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .cta-btn {
