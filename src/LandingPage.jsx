@@ -421,10 +421,10 @@ export default function LandingPage() {
         </span>
         <ul className="footer-links">
           <li>
-            <a href="https://x.com/YOUR_HANDLE">X / Twitter</a>
+            <a href="https://x.com/garden_clock">X / Twitter</a>
           </li>
           <li>
-            <a href="mailto:hello@gardenclock.app">Contact</a>
+            <a href="mailto:hello@gardenclock.xyz">Contact</a>
           </li>
           <li>
             <a href="/privacy">Privacy</a>
