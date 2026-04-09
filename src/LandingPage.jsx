@@ -104,8 +104,20 @@ const features = [
 
 export default function LandingPage() {
   const initialScene = sceneTimes.find((scene) => scene.hour === "7pm");
+  const initialSrc = initialScene?.imageSrc ?? sceneTimes[0].imageSrc;
   const [activeHour, setActiveHour] = useState(initialScene?.hour ?? sceneTimes[0].hour);
-  const [sceneFading, setSceneFading] = useState(false);
+  const [galleryBaseSrc, setGalleryBaseSrc] = useState(initialSrc);
+  const [galleryOverlaySrc, setGalleryOverlaySrc] = useState(initialSrc);
+  const [galleryBlend, setGalleryBlend] = useState(false);
+  const [galleryNoTransition, setGalleryNoTransition] = useState(false);
+  const [galleryBusy, setGalleryBusy] = useState(false);
+  const [overlayNonce, setOverlayNonce] = useState(0);
+  const galleryOverlayNonceRef = useRef(0);
+  const galleryTransitionEndedRef = useRef(false);
+  const galleryBlendRef = useRef(false);
+  const galleryBaseImgRef = useRef(null);
+  const galleryBaseSrcRef = useRef(initialSrc);
+  const galleryCommittedSrcRef = useRef(initialSrc);
   const [videoMuted, setVideoMuted] = useState(false);
   const featureVideoRef = useRef(null);
 
@@ -123,18 +135,89 @@ export default function LandingPage() {
     el.play().catch(() => {});
   }, [videoMuted]);
 
+  useEffect(() => {
+    galleryBaseSrcRef.current = galleryBaseSrc;
+  }, [galleryBaseSrc]);
+
   const activeScene = useMemo(
     () => sceneTimes.find((scene) => scene.hour === activeHour) ?? sceneTimes[0],
     [activeHour]
   );
 
   function selectSceneHour(hour) {
-    if (hour === activeHour) return;
-    setSceneFading(true);
-    window.setTimeout(() => {
+    if (hour === activeHour || galleryBusy) return;
+    const nextSrc = sceneTimes.find((s) => s.hour === hour)?.imageSrc;
+    if (!nextSrc) return;
+    setGalleryBusy(true);
+    setActiveHour(hour);
+    galleryOverlayNonceRef.current += 1;
+    setOverlayNonce(galleryOverlayNonceRef.current);
+    galleryBlendRef.current = false;
+    setGalleryBlend(false);
+    setGalleryOverlaySrc(nextSrc);
+  }
+
+  function onGalleryOverlayLoad(e) {
+    const img = e.currentTarget;
+    if (Number(img.dataset.nonce) !== galleryOverlayNonceRef.current) return;
+    const baseEl = galleryBaseImgRef.current;
+    if (baseEl) {
+      try {
+        const a = new URL(img.currentSrc, window.location.href).pathname;
+        const b = new URL(baseEl.currentSrc, window.location.href).pathname;
+        if (a === b) return;
+      } catch {
+        /* ignore */
+      }
+    }
+    galleryCommittedSrcRef.current = img.currentSrc;
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        galleryBlendRef.current = true;
+        setGalleryBlend(true);
+      });
+    });
+  }
+
+  function onGalleryOverlayError() {
+    setGalleryBusy(false);
+    galleryBlendRef.current = false;
+    setGalleryBlend(false);
+    setGalleryNoTransition(false);
+    setGalleryOverlaySrc(galleryBaseSrcRef.current);
+    const path = galleryBaseSrcRef.current;
+    const hourMatch = path.match(/\/([^/]+)\.png$/i);
+    const hour = hourMatch ? hourMatch[1] : null;
+    if (hour && sceneTimes.some((s) => s.hour === hour)) {
       setActiveHour(hour);
-      setSceneFading(false);
-    }, 400);
+    }
+  }
+
+  function onGalleryTransitionEnd(e) {
+    if (e.propertyName !== "opacity") return;
+    if (!e.target.classList.contains("scene-gallery-overlay")) return;
+    if (!galleryBlendRef.current || galleryTransitionEndedRef.current) return;
+    galleryTransitionEndedRef.current = true;
+    let path = "";
+    try {
+      path = new URL(galleryCommittedSrcRef.current, window.location.href).pathname;
+    } catch {
+      path = galleryCommittedSrcRef.current;
+    }
+    setGalleryNoTransition(true);
+    galleryBlendRef.current = false;
+    setGalleryBlend(false);
+    setGalleryBaseSrc(path);
+    setGalleryOverlaySrc(path);
+    setGalleryBusy(false);
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        setGalleryNoTransition(false);
+      });
+    });
+    queueMicrotask(() => {
+      galleryTransitionEndedRef.current = false;
+    });
   }
 
   return (
@@ -269,15 +352,34 @@ export default function LandingPage() {
         </div>
 
         <div className="scene-display">
-          <div className="scene-image-wrap">
+          <div
+            className={`scene-image-wrap${galleryBlend ? " gallery-blending" : ""}${galleryNoTransition ? " gallery-no-transition" : ""}`}
+          >
             <img
-              className={`scene-gallery-img${sceneFading ? " fading" : ""}`}
-              src={activeScene.imageSrc}
-              alt={`Garden Clock at ${activeScene.hour}`}
+              ref={galleryBaseImgRef}
+              className="scene-gallery-layer scene-gallery-base"
+              src={galleryBaseSrc}
+              alt=""
+              aria-hidden="true"
               loading="lazy"
               decoding="async"
               width={1920}
               height={1080}
+              draggable={false}
+            />
+            <img
+              className="scene-gallery-layer scene-gallery-overlay"
+              src={galleryOverlaySrc}
+              alt={`Garden Clock at ${activeScene.hour}`}
+              data-nonce={overlayNonce}
+              loading="eager"
+              decoding="async"
+              width={1920}
+              height={1080}
+              draggable={false}
+              onLoad={onGalleryOverlayLoad}
+              onError={onGalleryOverlayError}
+              onTransitionEnd={onGalleryTransitionEnd}
             />
           </div>
           <div className="scene-meta">
